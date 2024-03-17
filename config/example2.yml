@@ -4,6 +4,7 @@ time_start: 12/02/2024
 time_end: 12/04/2024
 time_delete: 12/05/2024
 proxmox_ip: x.x.x.x
+template_id: 9000
 instances:
   - id: 1
     vm_lot_name: "example-a"

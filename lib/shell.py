@@ -1,4 +1,5 @@
 import os
+import argparse
 
 def f_or_d_exists(path):
     if os.path.isdir(path):
@@ -17,3 +18,40 @@ def list_yaml_in_folder(path):
         elif ".yml" in filename:
             tmp_arr.append(path + '/' + filename)
     return tmp_arr
+
+
+def setup_argparse_parameters(parser):
+    parser.add_argument("-l" , "--list_config" , help="List project info from config folder" , nargs='?' , const=1 , type=int)
+    parser.add_argument("-c" , "--create" , help="Create project from config file" , nargs='?' , const=1 , type=int)
+    parser.add_argument("-d" , "--delete" , help="Delete project from config file" , nargs='?' , const=1 , type=int)
+    parser.add_argument("-con" , "--config" , help="Path of config file" , type=str)
+    parser.add_argument("-it" , "--interactive_config" , help="Create config file with interactive shell" , nargs='?' , const=1 , type=int)
+
+def setup_argparse_global_var(parser):
+    args = parser.parse_args()
+    tmp_arr_arguments = []
+    if args.list_config is not None:
+        tmp_arr_arguments.append("list_config")
+        return tmp_arr_arguments
+    elif args.interactive_config is not None:
+        tmp_arr_arguments.append("interactive_config")
+        return tmp_arr_arguments
+    elif args.create is not None:
+        if args.config is not None:
+            tmp_arr_arguments.append("create")
+            tmp_arr_arguments.append(args.config)
+            return tmp_arr_arguments
+        else:
+            tmp_arr_arguments.append("ERROR")
+            return tmp_arr_arguments
+    elif args.delete is not None:
+        if args.config is not None:
+            tmp_arr_arguments.append("delete")
+            tmp_arr_arguments.append(args.config)
+            return tmp_arr_arguments
+        else:
+            tmp_arr_arguments.append("ERROR")
+            return tmp_arr_arguments
+    else:
+        tmp_arr_arguments.append("ERROR")
+        return tmp_arr_arguments
