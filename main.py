@@ -2,8 +2,6 @@ from lib.shell import list_yaml_in_folder , setup_argparse_global_var , setup_ar
 from lib.get_project_info import display_info , get_project_info_yaml
 from lib.generate_template import create_template , create_template_file
 import argparse
-from rich.console import Console
-from time import sleep
 
 parser = argparse.ArgumentParser(
     prog="Creator of vm Proxmox",
