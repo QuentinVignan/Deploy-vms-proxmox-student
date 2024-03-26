@@ -15,7 +15,7 @@ MEMORY=0
 
 case $VAR_ARGS in
     create)
-        qm clone 9000 $VMID --name $NAME --full
+        qm clone $TEMPLATE_ID $VMID --name $NAME --full
         qm disk resize $VMID scsi0 $DISK
             qm set $VMID --memory $MEMORY
             qm set $VMID --sockets 2
@@ -49,6 +49,6 @@ case $VAR_ARGS in
         qm start $VMID
         ;;
     *)
-        echo "Usage: $0 create|delete"
+        echo "Usage: $0 create|delete|reset"
         exit 1
 esac
