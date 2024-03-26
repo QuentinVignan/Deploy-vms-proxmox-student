@@ -1,5 +1,7 @@
 import os
 import argparse
+import platform
+
 
 def f_or_d_exists(path):
     if os.path.isdir(path):
@@ -8,7 +10,8 @@ def f_or_d_exists(path):
         return True
     else:
         return False
-    
+
+
 def list_yaml_in_folder(path):
     list_file = os.listdir(path)
     tmp_arr = []
@@ -21,11 +24,14 @@ def list_yaml_in_folder(path):
 
 
 def setup_argparse_parameters(parser):
-    parser.add_argument("-l" , "--list_config" , help="List project info from config folder" , nargs='?' , const=1 , type=int)
-    parser.add_argument("-c" , "--create" , help="Create project from config file" , nargs='?' , const=1 , type=int)
-    parser.add_argument("-d" , "--delete" , help="Delete project from config file" , nargs='?' , const=1 , type=int)
-    parser.add_argument("-con" , "--config" , help="Path of config file" , type=str)
-    parser.add_argument("-it" , "--interactive_config" , help="Create config file with interactive shell" , nargs='?' , const=1 , type=int)
+    parser.add_argument("-l", "--list_config", help="List project info from config folder", nargs='?', const=1,
+                        type=int)
+    parser.add_argument("-c", "--create", help="Create project from config file", nargs='?', const=1, type=int)
+    parser.add_argument("-d", "--delete", help="Delete project from config file", nargs='?', const=1, type=int)
+    parser.add_argument("-con", "--config", help="Path of config file", type=str)
+    parser.add_argument("-it", "--interactive_config", help="Create config file with interactive shell", nargs='?',
+                        const=1, type=int)
+
 
 def setup_argparse_global_var(parser):
     args = parser.parse_args()
@@ -55,3 +61,21 @@ def setup_argparse_global_var(parser):
     else:
         tmp_arr_arguments.append("ERROR")
         return tmp_arr_arguments
+
+
+def sed_template(old_content, new_content, filename):
+    if platform.system() == "Darwin":
+        shell_exec("gsed -i 's|" + old_content + "|" + new_content + "|g' " + filename)
+    else:
+        shell_exec("gsed -i 's|" + old_content + "|" + new_content + "|g' " + filename)
+    return
+
+def shell_exec(command):
+    status = os.system(command)
+    return
+
+def write_csv_export(arr_to_csv , name):
+    f = open("./" + name + ".csv", "a")
+    for i in arr_to_csv:
+        f.write(i + '\n')
+    f.close()
