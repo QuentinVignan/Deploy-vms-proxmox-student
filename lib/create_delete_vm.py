@@ -129,4 +129,30 @@ def create_vm(config_file_path, user_proxmox, password_proxmox):
 
 
 def delete_vm(config_file_path, user_proxmox, password_proxmox):
+    proxmox_ip = ""
+    project_name = ""
+    console = Console()
+    with console.status("[bold green]Working on tasks...") as status:
+        with open(config_file_path, 'r') as file_load:
+            load_yaml = yaml.safe_load(file_load)
+            proxmox_ip = load_yaml['proxmox_ip']
+            project_name = load_yaml['project_name']
+            ssh_client = paramiko.SSHClient()
+            ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            try:
+                ssh_client.connect(hostname=str(proxmox_ip),port=22,username=user_proxmox,password=password_proxmox)
+            except:
+                print("Error connect to ssh with paramiko")
+                exit()
+            stdin, stdout, stderr = ssh_client.exec_command("ls ./" + project_name)
+            result = stdout.readlines()
+            for file in result:
+                filename = file.replace('\n' , '')
+                stdin, stdout, stderr = ssh_client.exec_command("./" + project_name + "/" + filename + " delete")
+                exit_status = stdout.channel.recv_exit_status()
+                filename = filename.replace('.sh', '')
+                console.log("Vm " + filename + " deleted complete")
+            stdin, stdout, stderr = ssh_client.exec_command("rm -rf ./" + project_name)
+            exit_status = stdout.channel.recv_exit_status()
+            ssh_client.close()
     return
