@@ -37,5 +37,3 @@ elif result[0] == "interactive_config":
     create_template_file(create_template())
 elif result[0] == "ERROR":
     print("ERROR aucun argument est ok")
-
-
