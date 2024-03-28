@@ -2,3 +2,4 @@ pyyaml
 rich
 paramiko
 scp
+pwinput
