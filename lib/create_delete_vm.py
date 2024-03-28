@@ -124,7 +124,7 @@ def create_vm(config_file_path, user_proxmox, password_proxmox):
                 ssh_client.close()
                 sleep(1)
                 i += 1
-    write_csv_export(student_creds , "./" + project_name + "_creds.csv")
+    write_csv_export(student_creds , "./" + project_name + "_creds")
     return
 
 
