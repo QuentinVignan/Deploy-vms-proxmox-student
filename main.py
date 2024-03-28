@@ -1,3 +1,5 @@
+import pwinput
+
 from lib.shell import list_yaml_in_folder , setup_argparse_global_var , setup_argparse_parameters
 from lib.get_project_info import display_info , get_project_info_yaml
 from lib.generate_template import create_template , create_template_file
@@ -25,11 +27,11 @@ elif result[0] == "list_config":
         display_info(info)
 elif result[0] == "create":
     user_proxmox = input("Enter user : ")
-    password_proxmox = input("Enter password " + user_proxmox + " : ")
+    password_proxmox = pwinput.pwinput("Enter password " + user_proxmox + " : ")
     create_vm(result[1] , user_proxmox , password_proxmox)
 elif result[0] == "delete":
     user_proxmox = input("Enter user for proxmox : ")
-    password_proxmox = input("Enter password " + user_proxmox + " : ")
+    password_proxmox = pwinput.pwinput("Enter password " + user_proxmox + " : ")
     delete_vm(result[1] , user_proxmox , password_proxmox)
 elif result[0] == "interactive_config":
     create_template_file(create_template())
