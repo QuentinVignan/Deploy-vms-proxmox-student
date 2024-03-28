@@ -4,7 +4,7 @@ import string
 import paramiko
 from rich.console import Console
 from rich.table import Table
-from lib.shell import shell_exec, sed_template , write_csv_export
+from lib.shell import shell_exec, sed_template, write_csv_export
 from paramiko import SSHClient
 from scp import SCPClient
 import os
@@ -44,7 +44,7 @@ def define_gateway(ip):
 def generate_password(length):
     """Generates a password of the given length without special characters or uppercase letters."""
     all_characters = string.ascii_lowercase + string.digits
-    password = ''.join(random.choice(all_characters) for i in range(length))
+    password = ''.join(random.choice(all_characters) for _ in range(length))
     return password
 
 
@@ -94,8 +94,9 @@ def create_vm(config_file_path, user_proxmox, password_proxmox):
                 vlan = instance['vlan']
                 shell_exec("cp ./lib/template/template.sh ./" + vm_name + ".sh")
                 path_file = "./" + vm_name + ".sh"
-                sed_template("VMID=1001", "VMID=" + vmid_vm , path_file)
+                sed_template("VMID=1001", "VMID=" + vmid_vm, path_file)
                 sed_template("VLAN=1001", "VLAN=" + str(vlan), path_file)
+                sed_template("TEMPLATE_ID=9000", "TEMPLATE_ID=" + str(template_id), path_file)
                 sed_template("NAME=0", 'NAME="' + vm_name + '"', path_file)
                 sed_template("DISK=0", 'DISK="' + str(disk) + 'G"', path_file)
                 sed_template("IP=0", 'IP="' + str(ip_vm) + '"', path_file)
@@ -108,7 +109,8 @@ def create_vm(config_file_path, user_proxmox, password_proxmox):
                 ssh_client = paramiko.SSHClient()
                 ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                 try:
-                    ssh_client.connect(hostname=str(proxmox_ip),port=22,username=user_proxmox,password=password_proxmox)
+                    ssh_client.connect(hostname=str(proxmox_ip), port=22, username=user_proxmox,
+                                       password=password_proxmox)
                 except:
                     print("Error connect to ssh with paramiko")
                     exit()
@@ -124,7 +126,7 @@ def create_vm(config_file_path, user_proxmox, password_proxmox):
                 ssh_client.close()
                 sleep(1)
                 i += 1
-    write_csv_export(student_creds , "./" + project_name + "_creds")
+    write_csv_export(student_creds, "./" + project_name + "_creds")
     return
 
 
@@ -140,14 +142,14 @@ def delete_vm(config_file_path, user_proxmox, password_proxmox):
             ssh_client = paramiko.SSHClient()
             ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             try:
-                ssh_client.connect(hostname=str(proxmox_ip),port=22,username=user_proxmox,password=password_proxmox)
+                ssh_client.connect(hostname=str(proxmox_ip), port=22, username=user_proxmox, password=password_proxmox)
             except:
                 print("Error connect to ssh with paramiko")
                 exit()
             stdin, stdout, stderr = ssh_client.exec_command("ls ./" + project_name)
             result = stdout.readlines()
             for file in result:
-                filename = file.replace('\n' , '')
+                filename = file.replace('\n', '')
                 stdin, stdout, stderr = ssh_client.exec_command("./" + project_name + "/" + filename + " delete")
                 exit_status = stdout.channel.recv_exit_status()
                 filename = filename.replace('.sh', '')
