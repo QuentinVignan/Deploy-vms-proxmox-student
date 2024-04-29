@@ -15,7 +15,7 @@ setup_argparse_parameters(parser)
 result = setup_argparse_global_var(parser)
 
 if result is None:
-    print("ERROR aucun argument est ok")
+    print("Use --help for see arguments list")
 elif result[0] == "list_config":
     list_file = list_yaml_in_folder('./config')
     info = []
