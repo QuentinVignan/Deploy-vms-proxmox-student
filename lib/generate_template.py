@@ -20,15 +20,15 @@ def create_template():
         vcpu = input("Vcpu : ")
         disk = input("Disk ( ex : 60 for 60Gb ) : ")
         reAdd = input("Add new instance [Y/n] : ")
-        result = {'id': id, 'vm_lot_name': name_project + "-" + str(id), 'network': network, 'vlan': vlan,
-                  'count': count, 'start_at': start_at, 'spec': {'memory': memory, 'vcpu': vcpu, 'disk': disk}}
+        result = {'id': id, 'vm_lot_name': name_project + "-" + str(id), 'network': network, 'vlan': int(vlan),
+                  'count': int(count), 'start_at': int(start_at), 'spec': {'memory': int(memory), 'vcpu': int(vcpu), 'disk': int(disk)}}
         instance.append(result)
         if reAdd == "n":
             add_instance = 0
         id += 1
-    final_result = {'instances': instance, 'template_id': template_id, 'promox_ip': proxmox_ip,
+    final_result = {'instances': instance, 'template_id': int(template_id), 'proxmox_ip': proxmox_ip,
                     'time_delete': time_delete, 'time_end': time_end, 'time_start': time_start,
-                    'project_name': name_project}
+                    'project_name': str(name_project)}
     return final_result
 
 

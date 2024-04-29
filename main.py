@@ -26,7 +26,7 @@ elif result[0] == "list_config":
     else:
         display_info(info)
 elif result[0] == "create":
-    user_proxmox = input("Enter user : ")
+    user_proxmox = input("Enter user for proxmox : ")
     password_proxmox = pwinput.pwinput("Enter password " + user_proxmox + " : ")
     create_vm(result[1] , user_proxmox , password_proxmox)
 elif result[0] == "delete":

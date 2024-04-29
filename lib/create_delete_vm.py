@@ -104,7 +104,7 @@ def create_vm(config_file_path, user_proxmox, password_proxmox):
                 sed_template("PASSWORD=0", 'PASSWORD="' + password_student + '"', path_file)
                 sed_template("VCPU=1", "VCPU=" + str(vcpu), path_file)
                 sed_template("MEMORY=0", "MEMORY=" + str(memory), path_file)
-                export_str = ip_vm + ":student:" + password_student
+                export_str = ip_vm.replace("/24" , "") + ":student:" + password_student
                 student_creds.append(export_str)
                 ssh_client = paramiko.SSHClient()
                 ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
