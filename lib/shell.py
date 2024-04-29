@@ -66,8 +66,8 @@ def setup_argparse_global_var(parser):
 def sed_template(old_content, new_content, filename):
     if platform.system() == "Darwin":
         shell_exec("gsed -i 's|" + old_content + "|" + new_content + "|g' " + filename)
-    else:
-        shell_exec("gsed -i 's|" + old_content + "|" + new_content + "|g' " + filename)
+    elif platform.system() == "Linux":
+        shell_exec("sed -i 's|" + old_content + "|" + new_content + "|g' " + filename)
     return
 
 def shell_exec(command):
